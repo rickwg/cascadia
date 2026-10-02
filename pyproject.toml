@@ -7,7 +7,9 @@ authors = [
     { name = "rick", email = "rickwg@mailbox.org" }
 ]
 requires-python = ">=3.14"
-dependencies = []
+dependencies = [
+    "fledgling",
+]
 
 [project.scripts]
 cascadia = "cascadia:main"
@@ -15,3 +17,6 @@ cascadia = "cascadia:main"
 [build-system]
 requires = ["uv_build>=0.12.8,<0.13.0"]
 build-backend = "uv_build"
+
+[tool.uv.sources]
+fledgling = { path = "../fledgling", editable = true }

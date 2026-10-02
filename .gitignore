@@ -1,3 +1,17 @@
 /project/
 /.claude/
 CLAUDE.md
+
+# Python-generated files
+__pycache__/
+*.py[oc]
+build/
+dist/
+wheels/
+*.egg-info
+
+# Virtual environments
+.venv
+
+# Secrets: this repository is public
+.env
