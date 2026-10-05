@@ -1,3 +1,4 @@
+import json
 import random
 
 from cascadia.openrouter_client import make_client
@@ -15,11 +16,11 @@ def next_message(agent_state: list[dict]) -> list[dict]:
     assistant_messages = [agent_state[-1]["choices"][0]["message"]]
     for tool_call in assistant_messages[0].get("tool_calls", []):
         result = call_weather_forcast_tool(tool_call)
-        assistant_messages.append({
+        assistant_messages.append(json.dumps({
             "role": "tool",
             "tool_call_id": tool_call["id"],
             "content": result,
-        })
+        }, ensure_ascii=False))
 
     return assistant_messages
 
@@ -30,13 +31,34 @@ def main():
     all_responses = list()
     messages = [{
         "role": "user",
-        "content": "What is the weather today?",
+        "content": "What is the weather for Berlin today? "
+                   "You can use the weather forecast tool to get the information. "
+                   "In fact you should assume you can use the tool to get the information",
     }]
+
+    tools = [{
+        "type": "function",
+        "function": {
+            "name": "weather_forecast",
+            "description": "Get the weather forecast for a given location for today.",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "location": {
+                        "type": "string",
+                        "description": "The location for which to get the weather forecast.",
+                    }
+                },
+                "required": ["location"],
+            },
+        }}]
+
     while budget < maximum_budget:
         with make_client() as router:
             response = router.chat.send(
                 model="apodex/apodex-1.1-mini:free",
                 messages=messages,
+                tools=tools,
             )
             all_responses.append(response.model_dump())
             budget += 1
