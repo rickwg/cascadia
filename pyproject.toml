@@ -9,6 +9,8 @@ authors = [
 requires-python = ">=3.14"
 dependencies = [
     "fledgling",
+    "openrouter>=1.3.19",
+    "python-dotenv>=1.2.4",
 ]
 
 [project.scripts]
@@ -20,3 +22,14 @@ build-backend = "uv_build"
 
 [tool.uv.sources]
 fledgling = { path = "../fledgling", editable = true }
+
+[dependency-groups]
+dev = [
+    "black>=26.5.1",
+    "pytest>=9.1.1",
+]
+
+# Added by Claude Code on 2026-10-02: test configuration.
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "--import-mode=importlib"
