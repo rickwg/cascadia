@@ -29,7 +29,6 @@ dev = [
     "pytest>=9.1.1",
 ]
 
-# Added by Claude Code on 2026-10-02: test configuration.
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 addopts = "--import-mode=importlib"
